@@ -5,7 +5,7 @@ This assignment is a comprehensive system administration exercise designed to en
 # Technological Lessons
 Virtualization and Docker Basics:
 
-# Understanding Docker and its role in virtualization.
+Understanding Docker and its role in virtualization.
 Creating and managing Docker images and containers.
 Docker Compose:
 

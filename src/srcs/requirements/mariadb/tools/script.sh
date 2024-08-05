@@ -8,12 +8,14 @@ sed -i 's|{{MYSQL_ROOT_PASSWORD}}|'${MYSQL_ROOT_PASSWORD}'|g' /tmp/init.sql
 
 # Update the 50-server.cnf file
 sed -i 's|{{MYSQL_PORT}}|'${MYSQL_PORT}'|g' /etc/mysql/mariadb.conf.d/50-server.cnf
-sed -i 's|{{MYSQL_ADRRESS}}|'${MYSQL_ADRRESS}'|g' /etc/mysql/mariadb.conf.d/50-server.cnf
+sed -i 's|{{MYSQL_ADDRESS}}|'${MYSQL_ADDRESS}'|g' /etc/mysql/mariadb.conf.d/50-server.cnf
 
 if [ -d "/var/lib/mysql/$WORDPRESS_DB_NAME" ]; then
-	echo "WordPress already installed"
-	mysqld_safe
+    echo "WordPress already installed"
+    mysqld_safe
 else
-	mysql_upgrade
-	mysqld --init-file="/tmp/init.sql"
+    mysql_upgrade
+    mysqld --init-file="/tmp/init.sql"
 fi
+
+docker logs mariadb

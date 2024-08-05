@@ -27,6 +27,7 @@ RUN		apt update -y && \
 		apt-get install -y \
 			mariadb-server \
 			mariadb-client && \
+			dos2unix\
 		mkdir -p /var/run/mysqld && \
 		chown -R mysql:mysql /var/run/mysqld && \
 		chown -R mysql:mysql /etc/mysql

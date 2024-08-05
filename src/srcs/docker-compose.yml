@@ -48,15 +48,15 @@ networks:
     driver: bridge
 
 volumes:
-  mariadb:  
+  mariadb:
     driver: local
     driver_opts:
       type: none
-      device: /home/whendrik/data/mysql
+      device: C:/Users/whendrik/data/mysql
       o: bind
   wordpress:
     driver: local
     driver_opts:
       type: none
-      device: /home/whendrik/data/wordpress
+      device: C:/Users/whendrik/data/wordpress
       o: bind

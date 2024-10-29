@@ -22,6 +22,6 @@ COPY	./conf/www.conf /tmp/www.conf
 RUN		chmod 755 /tmp/script.sh
 
 # Not supposed to be exposed to the host machine
-# EXPOSE	9000
+EXPOSE	9000
 
 ENTRYPOINT	["sh", "/tmp/script.sh"]

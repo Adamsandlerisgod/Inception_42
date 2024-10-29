@@ -83,6 +83,7 @@ clean:
 fclean: clean
 	@ rm -rd $(USER_HOME)/data/mysql
 	@ rm -rd $(USER_HOME)/data/wordpress
+	@ docker system prune -a
 
 # Sub rules
 create_volumes:
@@ -90,8 +91,8 @@ create_volumes:
 	@mkdir -p $(HOME)/data
 	@mkdir -p $(HOME)/data/mysql
 	@mkdir -p $(HOME)/data/wordpress
-	# @ chown -R $(USER) $(HOME)/data
-	# @ chmod -R 777 $(HOME)/data
+	@ chown -R $(USER) $(HOME)/data
+	@ chmod -R 777 $(HOME)/data
 
 host:
 

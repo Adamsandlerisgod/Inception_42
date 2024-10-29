@@ -23,7 +23,6 @@ FROM debian:bullseye
 
 # INSTALL DEPENDENCIES
 RUN		apt update -y && \
-		apt upgrade -y && \
 		apt-get install -y \
 			mariadb-server \
 			mariadb-client && \
@@ -37,6 +36,9 @@ COPY	./tools/script.sh /tmp/script.sh
 
 RUN		chown -R mysql:mysql /etc/mysql && \
 		chown -R mysql:mysql /tmp/
+
+RUN		chmod 777 /etc/mysql && \
+		chmod 777  /tmp/
 
 # Not supposed to be exposed to the host machine
 # EXPOSE	3306

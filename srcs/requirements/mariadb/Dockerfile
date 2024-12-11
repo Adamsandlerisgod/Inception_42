@@ -1,18 +1,21 @@
-FROM debian:bookworm
 
-RUN apt-get update && apt-get install -y php php-mysql php-fpm php-curl php-gd php-intl php-mbstring php-soap php-xml php-xmlrpc php-zip mariadb-server mariadb-client
-COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/.
-COPY tools/init.sh /usr/local/bin/.
+# this dockerfile is used to build the image for the mariadb container
+# it installs mariadb-server only and copies the configuration file
+# the EXPOSE port is 3306 its a way to tell docker that the container will use this port
+# at the end it runs the setup.sh and start the mysql
 
-RUN mkdir -p /var/run/mysqld && \
-	chown -R mysql:mysql /var/run/mysqld && \
-	chmod 777 /var/run/mysqld
+FROM	debian:bullseye
 
-RUN chmod +x /usr/local/bin/init.sh
+EXPOSE	3306
 
-EXPOSE 3306
+RUN		apt update && \
+		apt install -y --no-install-recommends --no-install-suggests \
+		mariadb-server && \
+		rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT [ "/usr/local/bin/init.sh" ]
+COPY	conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 
-# CMD ["mysqld", "--bind-address=0.0.0.0", "-uroot"]
-CMD [ "/usr/bin/mysqld_safe" ]
+COPY	tools/setup.sh /bin/
+RUN		chmod +x /bin/setup.sh
+
+CMD		["setup.sh", "mysqld_safe"]

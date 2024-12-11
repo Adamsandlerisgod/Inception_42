@@ -32,7 +32,13 @@ down:
 	@docker compose -f ./srcs/docker-compose.yml down
 
 clean: down
-	@docker rmi mariadb_image nginx_image wordpress_image
+	@echo "Cleaning up the environment..."
+	@sudo docker compose -f $(COMPOSE_FILE) down
+	@sudo docker stop $(docker ps -qa) 2>/dev/null || true
+	@sudo docker rm $(docker ps -qa) 2>/dev/null || true
+	@sudo docker rmi -f $(docker images -qa) 2>/dev/null || true
+	@sudo docker volume rm $(docker volume ls -q) 2>/dev/null || true
+	@sudo docker network rm $(docker network ls -q) 2>/dev/null || true
 
 fclean: clean
 	@docker system prune -af

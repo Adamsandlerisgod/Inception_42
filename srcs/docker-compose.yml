@@ -1,30 +1,27 @@
+version: "3.9"
+
 services:
-
-  # mariadb container ------------------------------------------------------------
-
-  # this is the only container that no depend on the others, so its the first to be created
+  # MariaDB Container --------------------------------------------------------
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/
     volumes:
       - database:/var/lib/mysql/
     networks:
-      - all
+      - inception
     init: true
     restart: on-failure
     env_file:
       - .env
 
-  # wordpress container ------------------------------------------------------------
-
-  # this is the second container to be created, it depends on the mariadb container
+  # WordPress Container ------------------------------------------------------
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress/
     volumes:
       - wordpress_files:/var/www/inception/
     networks:
-      - all
+      - inception
     init: true
     restart: on-failure
     env_file:
@@ -32,31 +29,27 @@ services:
     depends_on:
       - mariadb
 
-  # nginx container ------------------------------------------------------------
-
-  # this is the last container to be created, it depends on the wordpress container
-  # it use args to pass the certificate and key path to the Dockerfile
-  # in the build moment with show the private informations that where in the .env file
+  # Nginx Container ----------------------------------------------------------
   nginx:
     container_name: nginx
     build:
       context: ./requirements/nginx/
       args:
-        CERT_FOLDER: ${CERT_FOLDER}
-        CERTIFICATE: ${CERTIFICATE}
-        KEY: ${KEY}
-        COUNTRY: ${COUNTRY}
-        STATE: ${STATE}
-        LOCALITY: ${LOCALITY}
-        ORGANIZATION: ${ORGANIZATION}
-        UNIT: ${UNIT}
-        COMMON_NAME: ${COMMON_NAME}
+        SSL_CERTIFICATE_FOLDER: ${SSL_CERTIFICATE_FOLDER}
+        SSL_CERTIFICATE_PATH: ${SSL_CERTIFICATE_PATH}
+        SSL_KEY_PATH: ${SSL_KEY_PATH}
+        SSL_COUNTRY: ${SSL_COUNTRY}
+        SSL_STATE: ${SSL_STATE}
+        SSL_LOCALITY: ${SSL_LOCALITY}
+        SSL_ORGANIZATION: ${SSL_ORGANIZATION}
+        SSL_UNIT: ${SSL_UNIT}
+        SSL_COMMON_NAME: ${SSL_COMMON_NAME}
     ports:
-      - '443:443'
+      - "443:443"
     volumes:
       - wordpress_files:/var/www/inception/
     networks:
-      - all
+      - inception
     init: true
     restart: on-failure
     env_file:
@@ -64,22 +57,14 @@ services:
     depends_on:
       - wordpress
 
-# volumes --------------------------------------------------------------------
-
-# keeps the data shared between the containers
-# it acts like a shared hard drive between the containers and the host machine
-# device: where the data will be stored in the host machine
+# Volumes ---------------------------------------------------------------------
 volumes:
-
-  # keeps the database
   database:
     driver: local
     driver_opts:
       type: none
       o: bind
       device: ~/data/database
-
-  # keeps the wordpress files
   wordpress_files:
     driver: local
     driver_opts:
@@ -87,12 +72,7 @@ volumes:
       o: bind
       device: ~/data/wordpress_files
 
-# networks --------------------------------------------------------------------
-
-# this network is used to connect the containers
-# it acts like a virtual switch between the containers
-# all is the name of the network
-# bridge is the type of the network
+# Networks --------------------------------------------------------------------
 networks:
-  all:
+  inception:
     driver: bridge

@@ -28,12 +28,12 @@
 // define( 'WP_HOME', getenv('https://login.42.fr') );
 // define( 'WP_SITEURL', getenv('https://login.42.fr') );
 
-define( 'DB_NAME', getenv('DB_NAME') );
-define( 'DB_USER', getenv('DB_USER') );
-define( 'DB_PASSWORD', getenv('DB_PASSWORD') );
-define( 'DB_HOST', getenv('DB_HOST') );
-define( 'WP_HOME', getenv('WP_FULL_URL') );
-define( 'WP_SITEURL', getenv('WP_FULL_URL') );
+define( 'DB_NAME', getenv('DATABASE_NAME') );
+define( 'DB_USER', getenv('DATABASE_USER') );
+define( 'DB_PASSWORD', getenv('DATABASE_PASSWORD') );
+define( 'DB_HOST', getenv('DATABASE_HOST') );
+define( 'WP_HOME', getenv('WORDPRESS_FULL_URL') );
+define( 'WP_SITEURL', getenv('WORDPRESS_FULL_URL') );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
 

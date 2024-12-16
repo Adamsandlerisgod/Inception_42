@@ -26,10 +26,6 @@ create_dir:
 	@mkdir -p ~/data/database
 	@mkdir -p ~/data/wordpress_files
 
-# creates a backup of the data folder in the home directory
-backup:
-	@if [ -d ~/data ]; then sudo tar -czvf ~/data.tar.gz -C ~/ data/ > $(HIDE) && echo " $(BKP)" ; fi
-
 # stop the containers, remove the volumes and remove the containers
 clean:
 	@docker compose -f $(COMPOSE) down -v
@@ -37,8 +33,8 @@ clean:
 	@if [ -n "$$(docker ps -a --filter "name=wordpress" -q)" ]; then docker rm -f wordpress > $(HIDE) && echo " $(WP_CLN)" ; fi
 	@if [ -n "$$(docker ps -a --filter "name=mariadb" -q)" ]; then docker rm -f mariadb > $(HIDE) && echo " $(DB_CLN)" ; fi
 
-# backups the data and removes the containers, images and the host url from the host file
-fclean: clean backup
+#removes the images as well and removes Hosturl
+fclean: clean
 	@sudo rm -rf ~/data
 	@if [ -n "$$(docker image ls $(NAME)-nginx -q)" ]; then docker image rm -f $(NAME)-nginx > $(HIDE) && echo " $(NX_FLN)" ; fi
 	@if [ -n "$$(docker image ls $(NAME)-wordpress -q)" ]; then docker image rm -f $(NAME)-wordpress > $(HIDE) && echo " $(WP_FLN)" ; fi
